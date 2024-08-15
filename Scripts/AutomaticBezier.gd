@@ -27,7 +27,7 @@ func _ready():
 		if point_index == curve.point_count - 1: 
 			var direction_to_neighbor: Vector2 = (curve.get_point_position(point_index-1) - curve.get_point_position(point_index)).normalized()
 			var distance_to_neighbor: float = curve.get_point_position(point_index-1).distance_to(curve.get_point_position(point_index))
-			curve.set_point_out(0, direction_to_neighbor * distance_to_neighbor * .25)
+			curve.set_point_out(point_index, direction_to_neighbor * distance_to_neighbor * .25)
 			continue
 		
 		# MID POINT

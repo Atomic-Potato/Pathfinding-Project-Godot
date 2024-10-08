@@ -1,0 +1,41 @@
+# TODO
+- Check again how abstraction works
+
+- Unit types
+	- Assault
+	- Medic
+	- Grenader
+	- Tank
+	- builder???
+	
+- Friendly unit
+	x Selection
+	x movement
+	- Command to fire at enemy enetity
+	- automatic fire at enemy entity
+	- Passive and aggressive mode
+		- Passive: Stays in position and only deffends
+		- Aggressive: Keeps following enemy entity if possible
+
+- Enemy unit passive
+	- Stay in the same spot and fire at friendly units
+- Enemy unit aggressive
+	- Attack the established base point 
+	- Eliminate any friendly units detected
+
+- Fog of war system
+- Camera movement system 
+- Minimap system
+- Defences building system
+	
+##### DUNGEON GENERATION
+	You will need a set of room types and set of rules that dictate if another 
+	room can spawned next to which
+	- Dungenon Generation
+
+- Adapt the pathfinding system to use the generated dungeon
+- Add an option in the pathfinding system to scan solids using the tileset
+	(this should ignore custom set values for grid cell size and use the tilemap cell)
+
+##### PATHFINDING
+You need to implement avoidence using the birds thingy and agent priority

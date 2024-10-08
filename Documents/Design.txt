@@ -1,0 +1,12 @@
+# CORE GAMEPLAY LOOP
+The game is an RTS dungeon crawler where you gather all the troops that u can get
+before a wave of enemies would come in after a certain timer where you have to build
+and defend yourself from that wave.
+
+# SETTING
+It is sett inside of a trench warfare, however im not sure if ill make it cartoony and
+colorful, or a serious style like metal slug.
+
+# IDEAS
+- The wave should not approach until you have at least gathered 75% of troops
+- Player can control units anywhere in the dungeon

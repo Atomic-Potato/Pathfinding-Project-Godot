@@ -303,6 +303,7 @@ collision_mask = 0
 gravity_scale = 0.0
 script = ExtResource("1_lds1s")
 speed = 40.0
+is_debugging = true
 sprite = NodePath("Sprite")
 
 [node name="Sprite" type="Sprite2D" parent="."]

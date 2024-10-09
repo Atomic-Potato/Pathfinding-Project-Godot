@@ -27,11 +27,97 @@
 - Camera movement system 
 - Minimap system
 - Defences building system
-	
+
+----------------------------------------------------------------------------------------
+
 ##### DUNGEON GENERATION
 	You will need a set of room types and set of rules that dictate if another 
 	room can spawned next to which
-	- Dungenon Generation
+	
+	- Room (SQUARE) rules:
+		- Each side can have a door in 3 locations (left, mid, righ)
+		- Needs at least one door
+		- The door can connect to either a room or a tunnel
+		- If the door size is greater than 2, then it must connect to a room
+		- If the door size is 1, then it connects to a room or a tunnel
+	- Tunnel rules: 
+		- Tunnel length is the same size of one side of a room
+		- Is vertical or horizontal depending on the door
+		- The end of the tunnle is always open 
+			unless closed in the final pass of the generation
+		- Can have an open door of size 1 on its sides 
+			connecting another tunnel or a room 
+	
+	##### ALGORITHM
+	-NOTE: Tunnels dont count as rooms
+	
+	Set rooms_count
+	Set rooms_bias
+	
+	create queue explored_dungeon_element
+	create queue unexplored_dungeon_element
+	
+	generate room
+	enque generated room in unexplored
+	
+	while rooms_count > 0
+		dequeue unexlpored
+		
+		if dequeued is room
+			for each door in room
+				if door size > 1
+					generate room
+				else
+					choose room or tunnel with rooms_bias applied
+					if chosen room
+						generate room
+					else
+						generate tunnel
+				enqueue generated element in unexplored
+			rooms_count--
+		else
+			for each door in tunnel
+				choose room or tunnel with rooms_bias applied
+				if chosen room
+					generate room
+				else
+					generate tunnel
+				enqueue generated element in unexplored
+		enqueue the element in explored queue
+	
+	empty unexplored_dungeon_element
+	while explored_dungeon_element is not empty
+		dequeue explored
+		for each element connect by a door in the dequeued
+			if explored
+				continue
+			delete element
+			close door
+		if element is room
+			add to rooms list
+		else
+			add to tunnels list
+	
+	##### Classes
+	- Dungeon Manager:
+		Generates the rooms and tunnels then stores them in lists
+		- Rooms list
+		- Tunnels list
+	- Room
+		- Position
+		- Doors list
+		
+	- Tunnel
+		- position
+		- direction 
+		- doors list
+	- Door
+		- size
+		- position Vector2 position in the element like top or right
+		- positioning (left, right, mid)
+		- direction (vertical, horizontal)
+		
+----------------------------------------------------------------------------------------
 
 - Adapt the pathfinding system to use the generated dungeon
 - Add an option in the pathfinding system to scan solids using the tileset
@@ -39,3 +125,7 @@
 
 ##### PATHFINDING
 You need to implement avoidence using the birds thingy and agent priority
+
+# OPTIONAL
+##### DUNGEON BUILDER
+Allows the player to build their own maps 

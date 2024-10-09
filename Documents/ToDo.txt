@@ -34,6 +34,10 @@
 	You will need a set of room types and set of rules that dictate if another 
 	room can spawned next to which
 	
+	- Dungeon Block/Element:
+		- door sizes in tiles must of odd length and > 0
+		- a block size must be of odd size and > 3
+	
 	- Room (SQUARE) rules:
 		- Each side can have a door in 3 locations (left, mid, righ)
 		- Needs at least one door
@@ -114,16 +118,20 @@
 	##### Classes
 	- Dungeon Manager:
 		Generates the rooms and tunnels then stores them in lists
+		- constant door size
+		- constant block/element size
 		- Rooms list
 		- Tunnels list
+		
 	- Room
-		- Position
+		- Position (ceneter position of the room in the tilemap coordinates)
 		- Doors list
 		
 	- Tunnel
-		- position
+		- position (ceneter position of the tunnel in the tilemap coordinates)
 		- direction 
 		- doors list
+		
 	- Door
 		- size
 		- position Vector2 position in the element like top or right

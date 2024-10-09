@@ -49,6 +49,7 @@
 			connecting another tunnel or a room 
 	
 	##### ALGORITHM
+	-- YOU DID NOT CONSIDER THE CASE WHEN THERE IS COLLISIONS
 	-NOTE: Tunnels dont count as rooms
 	
 	Set rooms_count
@@ -65,6 +66,14 @@
 		
 		if dequeued is room
 			for each door in room
+				if exists element in explored or unexplored
+					if element is room
+						open door of that same size
+					else
+						change this door to size 1 
+						open adject door of size 1 to tunnel
+					continue
+					 
 				if door size > 1
 					generate room
 				else
@@ -77,6 +86,10 @@
 			rooms_count--
 		else
 			for each door in tunnel
+				if exists element in explored or unexplored
+						open adject element door of size 1
+					continue
+					
 				choose room or tunnel with rooms_bias applied
 				if chosen room
 					generate room
@@ -84,7 +97,7 @@
 					generate tunnel
 				enqueue generated element in unexplored
 		enqueue the element in explored queue
-	
+			
 	empty unexplored_dungeon_element
 	while explored_dungeon_element is not empty
 		dequeue explored
@@ -97,7 +110,7 @@
 			add to rooms list
 		else
 			add to tunnels list
-	
+
 	##### Classes
 	- Dungeon Manager:
 		Generates the rooms and tunnels then stores them in lists

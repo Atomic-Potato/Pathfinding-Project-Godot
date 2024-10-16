@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://5csenkrjusv7"
+path="res://.godot/imported/RedGreenTilemap.aseprite-6c4ccc3f6f34648da3ec8cfd680d4fb5.res"
+
+[deps]
+
+source_file="res://Art/TileMaps/RedGreenTilemap.aseprite"
+dest_files=["res://.godot/imported/RedGreenTilemap.aseprite-6c4ccc3f6f34648da3ec8cfd680d4fb5.res"]
+
+[params]
+

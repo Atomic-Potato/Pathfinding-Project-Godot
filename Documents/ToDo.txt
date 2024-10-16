@@ -137,7 +137,15 @@
 		- position Vector2 position in the element like top or right
 		- positioning (left, right, mid)
 		- direction (vertical, horizontal)
-		
+	
+	##### Block position
+	The positiion will be a custom coordinate on a 2D plane.
+	The position indicates the block position in the world, converting the position
+	to readl world coordinates will give us the tile in the center of the block
+	position in the real world.
+	For conversion, 1 unit in engine coordinates is equivalent to the size of 
+	the block / 2 multiplied by how many pixels is a tile
+	e.g. if we 16x16 tile and block size 3, then a position of (1,1) => (24,24)
 ----------------------------------------------------------------------------------------
 
 - Adapt the pathfinding system to use the generated dungeon

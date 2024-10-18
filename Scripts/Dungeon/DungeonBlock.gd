@@ -1,4 +1,4 @@
-class_name DungeonBlock extends Node
+class_name DungeonBlock extends Node2D
 
 var _position: Vector2i = Vector2i.ZERO
 ## NOTE: the size of the room must always have an odd number of tiles

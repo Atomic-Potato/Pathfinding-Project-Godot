@@ -57,8 +57,29 @@ func _ready():
 		_tilemap.set_cell(0, tile_position, 0,
 			_tileset_positions._door if _is_open else _tileset_positions._solid
 		)
-		await get_tree().create_timer(.5).timeout
 		
 func close_door() -> void:
 	# TODO
 	pass 
+
+func remove():
+	## Deleting the tiles
+	var starting_positions: Vector2i = Vector2i(
+		_position.x - floor(_size * .5),
+		_position.y - floor(_size * .5)
+	)
+	for i in range(1, _size + 1):
+		var tile_position: Vector2i
+		if _orientation == Horizontal:
+			tile_position = Vector2i(
+				starting_positions.x + i,
+				_position.y
+			)
+		else:
+			tile_position = Vector2i(
+				_position.x,
+				starting_positions.y + i,
+			)
+		_tilemap.erase_cell(0, tile_position)
+		await get_tree().create_timer(.5).timeout
+	queue_free()

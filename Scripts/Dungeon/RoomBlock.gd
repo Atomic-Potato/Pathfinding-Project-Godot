@@ -1,22 +1,12 @@
 class_name RoomBlock extends DungeonBlock
 
-## Contains if a door is open or closed and is of size 3x4
-## The rows are as following:
-## 0: Top / 1: Left / 2: Right / 3: Bottom 
-var doors: Array[Array] = []
+
 var _door_generation_bias: float
 var _half_width: int
 var _width: int
 var _top_left_tile_position: Vector2i
 var _bottom_right_tile_position: Vector2i
 
-enum Direction
-{
-	TOP,
-	LEFT,
-	RIGHT,
-	BOTTOM
-}
 
 func _init(
 		position: Vector2i,
@@ -52,6 +42,15 @@ func _init(
 	#print("Top left tile position: ", top_left_tile_position)
 	#print("Bottom right tile position: ", bottom_right_tile_position)
 	
+	## Initializing the doors array
+	for i in range(4):
+		var empty_doors: Array[DungeonDoor] = []
+		doors.append(empty_doors)
+	
+	## Initializing the neighbors array
+	for i in range(4):
+		neighbors.append(null)
+	
 func _ready():
 	
 	## Placing corner tiles
@@ -64,11 +63,6 @@ func _ready():
 		_bottom_right_tile_position.x, _top_left_tile_position.y
 		), 0, _tileset_positions._solid)
 	
-	##Initializing the doors array
-	for i in range(4):
-		var empty_doors: Array[DungeonDoor] = []
-		doors.append(empty_doors)
- 
 	## Generating doors
 	# NOTE: To find the position of each door use the following equation
 	# corner_position.x/y +/- door_size * i - floor(door_size * .5) +/- 1
@@ -85,7 +79,6 @@ func _ready():
 			),
 			_door_size_in_tiles,
 			self,
-			null,
 			_door_generation_bias
 		)
 		doors[0].append(door_top)
@@ -99,7 +92,6 @@ func _ready():
 			),
 			_door_size_in_tiles,
 			self,
-			null,
 			_door_generation_bias
 		)
 		doors[3].append(door_bottom)
@@ -115,7 +107,6 @@ func _ready():
 			),
 			_door_size_in_tiles,
 			self,
-			null,
 			_door_generation_bias
 		)
 		doors[1].append(door_left)
@@ -129,7 +120,6 @@ func _ready():
 			),
 			_door_size_in_tiles,
 			self,
-			null,
 			_door_generation_bias
 		)
 		doors[2].append(door_right)
@@ -143,37 +133,28 @@ func _ready():
 		for x in range(_top_left_tile_position.x + 1, _top_left_tile_position.x - 1 + _width):
 			_tilemap.set_cell(0, Vector2i(x, y), 0, _tileset_positions._non_solid)
 
-func get_world_position() -> Vector2:
-	return to_global(_tilemap.map_to_local(_position))
-
 func connect_to(block: DungeonBlock) -> bool:
 	if block._position == _position or block == null:
-		print("cant connect to room")
+		print("RoomBlock.gd: ", self, " cant connect to block: ", block)
 		return false
 	
-	var direction: Direction
-	
-	if block._position.x < _position.x: 
-		direction = Direction.LEFT
-	elif block._position.x > _position.x: 
-		direction = Direction.RIGHT
-	elif block._position.y < _position.y:
-		direction = Direction.TOP
-	else: 
-		direction = Direction.BOTTOM
-	
-	for door:DungeonDoor in doors[direction]:
-		if door._is_open:
-			door.connecting_block = block
+	var direction: Direction = get_block_direction(block)
+	neighbors[direction] = block
 	
 	return true
 
-func disconnect_from(block: DungeonBlock):
-	for side in doors:
-		for door:DungeonDoor in side:
-			if door.connecting_block == block:
-				door.connecting_block = null
-				return 
+func disconnect_from(block: DungeonBlock) -> bool:
+	var is_block_neighbor: bool = true if neighbors.find(block) != -1 else false 
+	if not is_block_neighbor or block == null:
+		print("RoomBlock.gd: ", self, " cannot disconect from: ", block)
+		return false
+	
+	var direction: Direction = get_block_direction(block)
+	neighbors[direction] = null
+	for door:DungeonDoor in doors[direction]:
+		door.close()
+	return true
+
 
 func get_max_connections_count() -> int:
 	var max: int = 0
@@ -184,46 +165,23 @@ func get_max_connections_count() -> int:
 			break
 	return max
 
-func get_connections() -> Array[DungeonBlock]:
-	var connections: Array[DungeonBlock] = []
-	for side in doors:
-		for door in side:
-			if door.connecting_block != null:
-				connections.append(door.connecting_block)
-				continue
-	return connections
-
-func get_adjacent_block(direction: Direction) -> DungeonBlock:
-	match direction:
-		Direction.TOP:
-			for i in range(3):
-				if doors[0][i].connecting_block:
-					return doors[0][i].connecting_block
-		Direction.LEFT:
-			for i in range(3):
-				if doors[1][i].connecting_block:
-					return doors[1][i].connecting_block
-		Direction.RIGHT:
-			for i in range(3):
-				if doors[2][i].connecting_block:
-					return doors[2][i].connecting_block
-		Direction.BOTTOM:
-			for i in range(3):
-				if doors[3][i].connecting_block:
-					return doors[3][i].connecting_block
-	return null
-
 func remove():
 	## Disconnecting from connected blocks
-	for side in doors:
-		for door:DungeonDoor in side:
-			if door.connecting_block != null:
-				door.connecting_block.disconnect_from(self)
+	for neighbor:DungeonBlock in neighbors:
+		if neighbor == null:
+			continue
+		neighbor.disconnect_from(self)
 	
 	## Removing doors
 	for side in doors:
 		for door:DungeonDoor in side:
 			door.remove()
+	
+	## Removing neighbors path connection
+	for neighbor:DungeonBlock in neighbors:
+		if neighbor == null:
+			continue
+		neighbor.next_blocks_to_center.remove_at(neighbor.next_blocks_to_center.find(self))
 	
 	## Removing the tiles
 	for y in range(_top_left_tile_position.y, _top_left_tile_position.y + _width):

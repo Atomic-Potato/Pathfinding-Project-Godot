@@ -37,8 +37,10 @@ non_solid_cell_color = Color(0, 0.392157, 0, 0.498039)
 solid_cell_color = Color(0.545098, 0, 0, 0.498039)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.35, 0.35)
+zoom = Vector2(5.725, 5.725)
 script = ExtResource("3_6kidx")
+zoom_speed = 10.0
+max_zoom_in = Vector2(6, 6)
 
 [node name="Agent" parent="." instance=ExtResource("4_d41mr")]
 

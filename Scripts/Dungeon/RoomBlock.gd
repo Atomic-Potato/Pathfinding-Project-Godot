@@ -165,6 +165,14 @@ func get_max_connections_count() -> int:
 			break
 	return max
 
+func close_no_neighbor_doors():
+	for direction:Direction in range(Direction.size()):
+		if neighbors[direction] != null:
+			continue
+		for door:DungeonDoor in doors[direction]:
+			door.close()
+	pass
+
 func remove():
 	## Disconnecting from connected blocks
 	for neighbor:DungeonBlock in neighbors:

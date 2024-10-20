@@ -81,10 +81,14 @@ func _replace_tiles(tileset_tile_position: Vector2i = Vector2i(-1,-1)):
 			_tilemap.set_cell(0, tile_position, 0, tileset_tile_position)
 
 func open() -> void:
+	if _is_open:
+		return
 	_replace_tiles(_tileset_positions._door)
 	_is_open = true
 
 func close() -> void:
+	if not _is_open:
+		return
 	_replace_tiles(_tileset_positions._solid_horizontal if _orientation == Horizontal else\
 		_tileset_positions._solid_vertical)
 	_is_open = false

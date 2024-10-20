@@ -28,7 +28,7 @@ non_solid_cell_color = Color(0, 0.392157, 0, 0.498039)
 solid_cell_color = Color(0.545098, 0, 0, 0.498039)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(0.25, 0.25)
 script = ExtResource("3_6kidx")
 log_speed_barrier = 200.0
 log_speed_multiplier = 200.0
@@ -58,10 +58,9 @@ format = 2
 
 [node name="DungeonManager" type="Node2D" parent="." node_paths=PackedStringArray("tileset_positions", "tilemap")]
 script = ExtResource("6_c6qvl")
-rooms_count = 5000
+rooms_count = 35
 tileset_positions = NodePath("DungeonTileSetPositions")
 tilemap = NodePath("../TileMap")
-is_debug = true
 is_draw_debug_circles = true
 is_draw_path_to_center = true
 

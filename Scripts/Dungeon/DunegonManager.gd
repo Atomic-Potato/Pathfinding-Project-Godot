@@ -1,3 +1,12 @@
+## TODO:
+## - Add a perecentage for if a room will be removed or not
+## - Redo the operation if the number of rooms is smaller than some threshhold
+## - Fix the walls on the edge rooms
+## - Add horizontal and vertical variation
+## - Look into autotiling
+## - Add a chance to open the entire wall
+## - Close any doors when disconnecting from a neighbor
+
 class_name DungeonManager extends Node2D
 
 @export var doo_generation_bias = .3
@@ -172,9 +181,14 @@ func _ready():
 	
 	## removing unexplored
 	for block in _unexplored_rooms:
-		#await get_tree().create_timer(execution_delay).timeout
+		await get_tree().create_timer(execution_delay).timeout
 		block.remove()
 	queue_redraw()
+	
+	# CAUTION:
+	# For some reason i have to wait for a small amount of time
+	# otherwise some rooms on the edges will not be connected
+	await get_tree().create_timer(0.1).timeout
 	
 	#print("Explored rooms count: ", _explored_rooms.size())
 	#print("UnExplored rooms count: ", _unexplored_rooms.size())
@@ -182,6 +196,7 @@ func _ready():
 	## A pass to fix neighbors
 	for block in _explored_rooms:
 		_debug_circle_1_position = (block as RoomBlock).get_world_position()
+
 		for other_block in _explored_rooms:
 			#if block.get_max_connections_count() == block.get_connections().size():
 				#break
@@ -197,9 +212,8 @@ func _ready():
 					block.connect_to(other_block)
 					queue_redraw()
 					#await get_tree().create_timer(execution_delay).timeout
+		block.close_no_neighbor_doors() # NOTE: dont wanna make another loop for this
 	queue_redraw()
-	
-	
 	
 	## A pass to add missing paths to the center
 	_explored_rooms.reverse() 	# NOTE: This makes it traverse the tree from the outside in
@@ -224,19 +238,8 @@ func _ready():
 				queue_redraw()
 				#await get_tree().create_timer(3).timeout
 	
+	queue_redraw()
 	
-	# TODO: Remove all of this bs since it does not work, and implement the minimum spanning
-	# tree instead
-	# actually not even that will work, instead use that algorithm that u thought off for fortnite
-	# destruction, the how do the platforms know they are connected to the ground,
-	# so it goes as follows:
-	# all rooms must point to the center/starting room
-	# when a room is created, it points to one of its neighboors that is pointing to the center
-	# a room can be removed if:
-	#	its not the center room
-	#	and nothing is point to it
-	#	or its neighbors have other neighbors other than itself and at least one is not pointing to it
-	# once removed, update the neighbors to point to a neighbor not pointing to them
 	## removing rooms 
 	for block: DungeonBlock in _explored_rooms:
 		print(block)

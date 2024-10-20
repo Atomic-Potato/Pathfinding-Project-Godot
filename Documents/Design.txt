@@ -10,3 +10,6 @@ colorful, or a serious style like metal slug.
 # IDEAS
 - The wave should not approach until you have at least gathered 75% of troops
 - Player can control units anywhere in the dungeon
+- Upgrading your army from the store and buying "killstreaks"
+- Make your own survival maps from, optionally, procedurally generated maps
+	- No limit on the size of the maps, but there should be a section for ram killers

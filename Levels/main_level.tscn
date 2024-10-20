@@ -58,6 +58,7 @@ format = 2
 
 [node name="DungeonManager" type="Node2D" parent="." node_paths=PackedStringArray("tileset_positions", "tilemap")]
 script = ExtResource("6_c6qvl")
+triple_door_generation_bias = 0.2
 rooms_count = 35
 tileset_positions = NodePath("DungeonTileSetPositions")
 tilemap = NodePath("../TileMap")

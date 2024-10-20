@@ -2,11 +2,11 @@ class_name RoomBlock extends DungeonBlock
 
 
 var _door_generation_bias: float
+var _triple_door_generation_bias: float
 var _half_width: int
 var _width: int
 var _top_left_tile_position: Vector2i
 var _bottom_right_tile_position: Vector2i
-
 
 func _init(
 		position: Vector2i,
@@ -14,7 +14,8 @@ func _init(
 		tile_size_in_pixels: int,
 		tilemap:TileMap,
 		tileset_positions: DungeonTileSetPositions,
-		door_generation_bias: float = 0.5
+		door_generation_bias: float = 0.5,
+		triple_door_generation_bias: float = 0.5
 	):
 	
 	_position = position
@@ -24,7 +25,8 @@ func _init(
 		else door_size_in_tiles + 1
 	_tile_size_in_pixels = tile_size_in_pixels
 	_door_generation_bias = door_generation_bias
-
+	_triple_door_generation_bias = triple_door_generation_bias
+	
 	# NOTE TO SELF: to get from the number of tiles from the center to one of the sides is:
 	# 		door_size + ceil(door_size/2) + 1
 	# NOTE: We add 1 since rooms will always have an odd number of tiles for their width/height
@@ -67,6 +69,12 @@ func _ready():
 	# NOTE: To find the position of each door use the following equation
 	# corner_position.x/y +/- door_size * i - floor(door_size * .5) +/- 1
 	# i honestly dont know why we +/- 1 at the end
+	
+	var is_top_triple_door: bool = randf() < _triple_door_generation_bias
+	var is_bottom_triple_door: bool = randf() < _triple_door_generation_bias
+	var is_left_triple_door: bool = randf() < _triple_door_generation_bias
+	var is_right_triple_door: bool = randf() < _triple_door_generation_bias
+	
 	for i in range(1,4):
 		# horizontal doors
 		var door_top: DungeonDoor = DungeonDoor.new(
@@ -79,7 +87,7 @@ func _ready():
 			),
 			_door_size_in_tiles,
 			self,
-			_door_generation_bias
+			1 if is_top_triple_door else _door_generation_bias 
 		)
 		doors[0].append(door_top)
 		var door_bottom: DungeonDoor = DungeonDoor.new(
@@ -92,7 +100,7 @@ func _ready():
 			),
 			_door_size_in_tiles,
 			self,
-			_door_generation_bias
+			1 if is_bottom_triple_door else _door_generation_bias 
 		)
 		doors[3].append(door_bottom)
 		
@@ -107,7 +115,7 @@ func _ready():
 			),
 			_door_size_in_tiles,
 			self,
-			_door_generation_bias
+			1 if is_left_triple_door else _door_generation_bias
 		)
 		doors[1].append(door_left)
 		var door_right: DungeonDoor = DungeonDoor.new(
@@ -120,7 +128,7 @@ func _ready():
 			),
 			_door_size_in_tiles,
 			self,
-			_door_generation_bias
+			1 if is_right_triple_door else _door_generation_bias
 		)
 		doors[2].append(door_right)
 		add_child(door_top)

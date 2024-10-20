@@ -1,15 +1,15 @@
 ## TODO:
 ## - Add a perecentage for if a room will be removed or not
 ## - Redo the operation if the number of rooms is smaller than some threshhold
-## - Fix the walls on the edge rooms
 ## - Add horizontal and vertical variation
 ## - Look into autotiling
-## - Add a chance to open the entire wall
-## - Close any doors when disconnecting from a neighbor
+## - Create a class to hold a cluster of rooms
+##		(Rooms which are connected by fully open walls)
 
 class_name DungeonManager extends Node2D
 
-@export var doo_generation_bias = .3
+@export_range(0,1) var door_generation_bias = .3
+@export_range(0,1) var triple_door_generation_bias = .35
 @export var rooms_count: int = 5
 @export var door_size: int = 5
 @export var tileset_positions: DungeonTileSetPositions
@@ -97,10 +97,11 @@ func _draw():
 
 func _ready():
 	var room: RoomBlock = RoomBlock.new(
-		Vector2i(0,0), door_size, 16, tilemap, tileset_positions, doo_generation_bias)
+		Vector2i(0,0), door_size, 16, tilemap, tileset_positions, door_generation_bias, triple_door_generation_bias)
 	add_child(room)
 	_unexplored_rooms.push_back(room)
 	
+	## Generating base rooms
 	for i in range(rooms_count):
 		if _unexplored_rooms.is_empty():
 			#print("All explored, breaking...")
@@ -157,7 +158,15 @@ func _ready():
 				continue
 			
 			# generating a block at the position
-			var neighbor = RoomBlock.new(neighbor_position, door_size, 16	, tilemap, tileset_positions, doo_generation_bias)
+			var neighbor = RoomBlock.new(
+				neighbor_position, 
+				door_size, 
+				16, 
+				tilemap, 
+				tileset_positions, 
+				door_generation_bias,
+				triple_door_generation_bias
+			)
 			add_child(neighbor)
 			
 			#print(rooms_count, " ", neighbor)
@@ -181,7 +190,7 @@ func _ready():
 	
 	## removing unexplored
 	for block in _unexplored_rooms:
-		await get_tree().create_timer(execution_delay).timeout
+		#await get_tree().create_timer(execution_delay).timeout
 		block.remove()
 	queue_redraw()
 	

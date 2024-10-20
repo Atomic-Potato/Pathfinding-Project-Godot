@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://5csenkrjusv7"
+path="res://.godot/imported/flat_colors_tileset.aseprite-cb1bfc2480df25d411b67b7a6764eff3.res"
+
+[deps]
+
+source_file="res://art/tilemaps/flat_colors_tileset.aseprite"
+dest_files=["res://.godot/imported/flat_colors_tileset.aseprite-cb1bfc2480df25d411b67b7a6764eff3.res"]
+
+[params]
+

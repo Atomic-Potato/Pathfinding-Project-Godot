@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d14c3v3lfdfp5"
-path="res://.godot/imported/Red Green Tilemap.png-98bb5a8c7d2aae4106e53f19c9457325.ctex"
+path="res://.godot/imported/flat_colors_tileset.png-b39bc99aac18776032082c207ecbdd96.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/TileMaps/Red Green Tilemap.png"
-dest_files=["res://.godot/imported/Red Green Tilemap.png-98bb5a8c7d2aae4106e53f19c9457325.ctex"]
+source_file="res://art/tilemaps/flat_colors_tileset.png"
+dest_files=["res://.godot/imported/flat_colors_tileset.png-b39bc99aac18776032082c207ecbdd96.ctex"]
 
 [params]
 

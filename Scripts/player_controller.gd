@@ -162,7 +162,7 @@ func navigate_selection_to_mouse() -> void:
 			j = (j+1) % selection.size()
 
 func get_adjacent_cells(start_position: Vector2, adjacent_count: int) -> Array[Vector2i]:
-	var adjacent_cells: Array[Vector2i]
+	var adjacent_cells: Array[Vector2i] = []
 	var explored_cells : Dictionary = {}
 	var starting_cell: Vector2i = grid.get_id_from_position(start_position)
 	var queue: Array[Vector2i]

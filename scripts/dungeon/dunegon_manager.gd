@@ -28,6 +28,8 @@ var _explored_rooms: Array[DungeonBlock] = []
 var _unexplored_rooms: Array[DungeonBlock] = []
 var _current_room: DungeonBlock 
 
+var dungeon_generated_signal: Signal
+
 var _debug_circle_1_position: Vector2
 var _debug_circle_2_position: Vector2
 
@@ -113,7 +115,6 @@ func _ready():
 		# continue if no doors are open
 		if _current_room.get_doors(-1, true).size() == 0: 
 			#print("No doors open, moving to the next room")
-			_unexplored_rooms.remove_at(_unexplored_rooms.find(_current_room))
 			_current_room.remove()
 			continue
 			
@@ -283,7 +284,6 @@ func _ready():
 			block.remove()
 			#queue_redraw()
 			#await get_tree().create_timer(.01).timeout
+			
+	dungeon_generated_signal.emit()
 	
-func _input(event):
-	if event.is_action_pressed("ui_select"):  # "ui_select" is mapped to space by default in Godot
-		get_tree().reload_current_scene()  # Switch to the newly loaded scene

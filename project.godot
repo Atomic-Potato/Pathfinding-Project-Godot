@@ -11,15 +11,16 @@ config_version=5
 [application]
 
 config/name="Pathfinding"
-run/main_scene="res://Levels/main_level.tscn"
+run/main_scene="res://levels/main_level.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
 config/icon="res://icon.svg"
 
 [autoload]
 
-GridsManager="*res://Scripts/Pathfinding/grids_manager.gd"
-PlayerController="*res://Scripts/player_controller.gd"
+GridsManager="*res://scripts/pathfinding/grids_manager.gd"
+PlayerController="*res://scripts/player_controller.gd"
+GameManageAutoload="*res://scripts/managers/game_manager.gd"
 
 [display]
 

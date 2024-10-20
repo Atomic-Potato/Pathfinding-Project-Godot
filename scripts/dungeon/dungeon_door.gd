@@ -19,14 +19,14 @@ func _init(
 		tileset_positions: DungeonTileSetPositions,
 		tilemap: TileMap,
 		orientation: int = Horizontal,
-		position: Vector2i = Vector2i.ZERO,
+		door_position: Vector2i = Vector2i.ZERO,
 		size: int = 0,
 		parent_block: DungeonBlock = null,
 		is_open_bias: float = 0.5
 	):
 	
 	_orientation = orientation
-	_position = position
+	_position = door_position
 	_size = size
 	self.parent_block = parent_block
 	_is_open = true if randf() < is_open_bias else false

@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cbgmfpiufluea"]
+
+[ext_resource type="Script" path="res://scripts/dungeon/dunegon_manager.gd" id="1_4mrs5"]
+[ext_resource type="Script" path="res://scripts/dungeon/dungeon_tileset_positions.gd" id="2_d8gow"]
+[ext_resource type="PackedScene" uid="uid://ki6ptxkkpsde" path="res://scenes/managers/dugeon_generation_tilemap.tscn" id="3_hpofl"]
+
+[node name="DungeonManager" type="Node2D" node_paths=PackedStringArray("tileset_positions", "tilemap")]
+script = ExtResource("1_4mrs5")
+triple_door_generation_bias = 0.2
+rooms_count = 35
+tileset_positions = NodePath("DungeonTileSetPositions")
+tilemap = NodePath("TileMap")
+is_draw_debug_circles = true
+is_draw_path_to_center = true
+
+[node name="DungeonTileSetPositions" type="Node" parent="."]
+script = ExtResource("2_d8gow")
+_non_solid = Vector2i(1, 0)
+_door = Vector2i(1, 0)
+
+[node name="TileMap" parent="." instance=ExtResource("3_hpofl")]

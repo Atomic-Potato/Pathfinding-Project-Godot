@@ -1,8 +1,8 @@
 [gd_scene load_steps=17 format=3 uid="uid://bu7vfbh7sdu1h"]
 
-[ext_resource type="Script" path="res://Scripts/Pathfinding/agent.gd" id="1_lds1s"]
-[ext_resource type="Texture2D" uid="uid://45kjkp2yjch2" path="res://Art/Player_Spritesheet.png" id="2_bfndq"]
-[ext_resource type="Script" path="res://Scripts/Pathfinding/agent_animation_manager.gd" id="3_6g1y8"]
+[ext_resource type="Script" path="res://scripts/pathfinding/agent.gd" id="1_lds1s"]
+[ext_resource type="Texture2D" uid="uid://45kjkp2yjch2" path="res://art/player_sprite_sheet.png" id="2_bfndq"]
+[ext_resource type="Script" path="res://scripts/pathfinding/agent_animation_manager.gd" id="3_6g1y8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eamwb"]
 size = Vector2(8, 8)

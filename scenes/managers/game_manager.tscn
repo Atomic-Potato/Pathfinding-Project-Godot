@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://qws54p3bf47f"]
+
+[ext_resource type="Script" path="res://scripts/managers/game_manager.gd" id="1_mefal"]
+
+[node name="GameManager" type="Node2D"]
+script = ExtResource("1_mefal")

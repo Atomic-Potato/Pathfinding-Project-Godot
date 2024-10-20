@@ -9,7 +9,7 @@ var _top_left_tile_position: Vector2i
 var _bottom_right_tile_position: Vector2i
 
 func _init(
-		position: Vector2i,
+		block_position: Vector2i,
 		door_size_in_tiles: int,
 		tile_size_in_pixels: int,
 		tilemap:TileMap,
@@ -18,7 +18,7 @@ func _init(
 		triple_door_generation_bias: float = 0.5
 	):
 	
-	_position = position
+	_position = block_position
 	_tilemap = tilemap
 	_tileset_positions = tileset_positions
 	_door_size_in_tiles = door_size_in_tiles if fmod(float(door_size_in_tiles),2.0) != 0.0 \
@@ -87,7 +87,7 @@ func _ready():
 			),
 			_door_size_in_tiles,
 			self,
-			1 if is_top_triple_door else _door_generation_bias 
+			1.0 if is_top_triple_door else _door_generation_bias 
 		)
 		doors[0].append(door_top)
 		var door_bottom: DungeonDoor = DungeonDoor.new(
@@ -100,7 +100,7 @@ func _ready():
 			),
 			_door_size_in_tiles,
 			self,
-			1 if is_bottom_triple_door else _door_generation_bias 
+			1.0 if is_bottom_triple_door else _door_generation_bias 
 		)
 		doors[3].append(door_bottom)
 		
@@ -115,7 +115,7 @@ func _ready():
 			),
 			_door_size_in_tiles,
 			self,
-			1 if is_left_triple_door else _door_generation_bias
+			1.0 if is_left_triple_door else _door_generation_bias
 		)
 		doors[1].append(door_left)
 		var door_right: DungeonDoor = DungeonDoor.new(
@@ -128,7 +128,7 @@ func _ready():
 			),
 			_door_size_in_tiles,
 			self,
-			1 if is_right_triple_door else _door_generation_bias
+			1.0 if is_right_triple_door else _door_generation_bias
 		)
 		doors[2].append(door_right)
 		add_child(door_top)
@@ -165,16 +165,16 @@ func disconnect_from(block: DungeonBlock) -> bool:
 
 
 func get_max_connections_count() -> int:
-	var max: int = 0
+	var max_connections: int = 0
 	for side in doors:
 		for door in side:
 			if door._is_open:
-				max += 1
+				max_connections += 1
 			break
-	return max
+	return max_connections	
 
 func close_no_neighbor_doors():
-	for direction:Direction in range(Direction.size()):
+	for direction in range(Direction.size()):
 		if neighbors[direction] != null:
 			continue
 		for door:DungeonDoor in doors[direction]:
@@ -197,7 +197,11 @@ func remove():
 	for neighbor:DungeonBlock in neighbors:
 		if neighbor == null:
 			continue
-		neighbor.next_blocks_to_center.remove_at(neighbor.next_blocks_to_center.find(self))
+		# NOTE: self is not necessarily a neighbor of self's neighbor
+		# depending on the way the rooms were generated 
+		var self_index: int = neighbor.next_blocks_to_center.find(self)
+		if self_index > -1: 
+			neighbor.next_blocks_to_center.remove_at(self_index)
 	
 	## Removing the tiles
 	for y in range(_top_left_tile_position.y, _top_left_tile_position.y + _width):

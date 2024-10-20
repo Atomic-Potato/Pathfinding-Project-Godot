@@ -22,7 +22,7 @@ func get_world_position() -> Vector2:
 	return to_global(_tilemap.map_to_local(_position))
 
 func get_block_direction(block: DungeonBlock) -> Direction:
-	var direction: Direction = -1
+	var direction: int = -1
 	if block._position.x < _position.x: 
 		direction = Direction.LEFT
 	elif block._position.x > _position.x: 
@@ -33,7 +33,7 @@ func get_block_direction(block: DungeonBlock) -> Direction:
 		direction = Direction.BOTTOM
 	return direction
 
-func get_doors(direction: Direction = -1, is_open: bool = true)-> Array[DungeonDoor]:
+func get_doors(direction: int = -1, is_open: bool = true)-> Array[DungeonDoor]:
 	if direction > 3:
 		print_debug("Direction ", direction, " does not exist")
 		return []
@@ -51,7 +51,7 @@ func get_doors(direction: Direction = -1, is_open: bool = true)-> Array[DungeonD
 	
 	return open_doors
 
-func change_doors_status(direction: Direction = -1, is_open: bool = true):
+func change_doors_status(direction: int = -1, is_open: bool = true):
 	if direction > 3:
 		print_debug("Direction ", direction, " does not exist")
 		

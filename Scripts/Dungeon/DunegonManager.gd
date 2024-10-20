@@ -8,6 +8,7 @@ class_name DungeonManager extends Node2D
 
 @export_category("Debugging")
 @export var is_debug: bool
+@export var execution_delay: float = 0.00000001
 @export var is_draw_debug_circles: bool
 @export var is_draw_neighbor_connections: bool
 @export var neighbor_connection_color: Color = Color.SLATE_GRAY
@@ -54,7 +55,7 @@ func _draw():
 				var angle: int = rad_to_deg(direction.angle_to(Vector2.RIGHT))
 				var offset: Vector2 = Vector2(
 					50 if angle == 90 or angle == -90 else 0,
-					50 if angle == 180 or angle == 0 else 0,
+					50 if angle == -180 or angle == 0 else 0,
 				)
 				# arrow head
 				draw_line(
@@ -75,6 +76,12 @@ func _draw():
 				draw_line(
 					block.get_world_position(), 
 					next_block.get_world_position(),
+					neighbor_connection_color,
+					16
+				)
+				draw_line(
+					block.get_world_position(), 
+					block.get_world_position() + direction * head_distance,
 					path_to_center_Color,
 					16
 				)
@@ -87,7 +94,7 @@ func _ready():
 	
 	for i in range(rooms_count):
 		if _unexplored_rooms.is_empty():
-			print("All explored, breaking...")
+			#print("All explored, breaking...")
 			break
 		
 		_current_room = _unexplored_rooms.pop_front()
@@ -95,7 +102,7 @@ func _ready():
 		
 		# continue if no doors are open
 		if _current_room.get_doors(-1, true).size() == 0: 
-			print("No doors open, moving to the next room")
+			#print("No doors open, moving to the next room")
 			_unexplored_rooms.remove_at(_unexplored_rooms.find(_current_room))
 			_current_room.remove()
 			continue
@@ -126,7 +133,7 @@ func _ready():
 					blocking_block = block
 					break
 			if blocking_block != null:
-				#await get_tree().create_timer(1).timeout
+				#await get_tree().create_timer(execution_delay).timeout
 				# chance of closing or opening both sides if they are not neighbors
 				if _current_room.neighbors.find(blocking_block) == -1\
 				and blocking_block.neighbors.find(_current_room) == -1:
@@ -145,7 +152,7 @@ func _ready():
 			add_child(neighbor)
 			
 			#print(rooms_count, " ", neighbor)
-			await get_tree().create_timer(.01).timeout
+			#await get_tree().create_timer(execution_delay).timeout
 			
 			# Adding neighbor block to current block
 			_current_room.neighbors[side_direction] = neighbor
@@ -159,18 +166,18 @@ func _ready():
 			
 		_explored_rooms.push_back(_current_room)
 		queue_redraw()
-		#await get_tree().create_timer(1).timeout
+		#await get_tree().create_timer(execution_delay).timeout
 		#print("Explored rooms count: ", _explored_rooms.size())
 	
 	
 	## removing unexplored
 	for block in _unexplored_rooms:
-		await get_tree().create_timer(.01).timeout
+		#await get_tree().create_timer(execution_delay).timeout
 		block.remove()
 	queue_redraw()
 	
-	print("Explored rooms count: ", _explored_rooms.size())
-	print("UnExplored rooms count: ", _unexplored_rooms.size())
+	#print("Explored rooms count: ", _explored_rooms.size())
+	#print("UnExplored rooms count: ", _unexplored_rooms.size())
 	
 	## A pass to fix neighbors
 	for block in _explored_rooms:
@@ -189,10 +196,14 @@ func _ready():
 				if block.get_doors(block.get_block_direction(other_block)).size():
 					block.connect_to(other_block)
 					queue_redraw()
-					#await get_tree().create_timer(.001).timeout
+					#await get_tree().create_timer(execution_delay).timeout
 	queue_redraw()
 	
+	
+	
 	## A pass to add missing paths to the center
+	_explored_rooms.reverse() 	# NOTE: This makes it traverse the tree from the outside in
+								# otherwise it would cause loops that would cut off the dungeon at the edges
 	for block: DungeonBlock in _explored_rooms:
 		# skipping the center block
 		if block._position == Vector2i.ZERO:
@@ -206,12 +217,14 @@ func _ready():
 			
 			_debug_circle_2_position = neighbor.get_world_position()
 			queue_redraw()
+			#await get_tree().create_timer(1).timeout
 			# if block is not on the neighbor's path
 			if neighbor.next_blocks_to_center.find(block) == -1:
 				block.next_blocks_to_center.append(neighbor)
 				queue_redraw()
-				#await get_tree().create_timer(.001).timeout
-				
+				#await get_tree().create_timer(3).timeout
+	
+	
 	# TODO: Remove all of this bs since it does not work, and implement the minimum spanning
 	# tree instead
 	# actually not even that will work, instead use that algorithm that u thought off for fortnite
@@ -239,7 +252,7 @@ func _ready():
 			if neighbor == null:
 				continue
 			if neighbor.next_blocks_to_center.find(block) != 1:
-				print("Nothing pointing to block")
+				#print("Nothing pointing to block")
 				is_nothing_pointing_to_block = false
 				break
 		if not is_nothing_pointing_to_block:
@@ -249,15 +262,15 @@ func _ready():
 					continue
 				var path_options: int = neighbor.next_blocks_to_center.size()
 				if  not (path_options > 1 or (path_options == 1 and neighbor.next_blocks_to_center.find(block) == -1)):
-					print("All neighbors dont have extra paths")
+					#print("All neighbors dont have extra paths")
 					is_all_neighbors_have_extra_paths = false
 					break
 		
 		if is_all_neighbors_have_extra_paths:
 			_explored_rooms.remove_at(_explored_rooms.find(block))
 			block.remove()
-			queue_redraw()
-			await get_tree().create_timer(.01).timeout
+			#queue_redraw()
+			#await get_tree().create_timer(.01).timeout
 	
 func _input(event):
 	if event.is_action_pressed("ui_select"):  # "ui_select" is mapped to space by default in Godot

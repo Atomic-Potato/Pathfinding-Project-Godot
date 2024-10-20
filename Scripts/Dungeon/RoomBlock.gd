@@ -54,14 +54,14 @@ func _init(
 func _ready():
 	
 	## Placing corner tiles
-	_tilemap.set_cell(0, _top_left_tile_position, 0, _tileset_positions._solid)
-	_tilemap.set_cell(0, _bottom_right_tile_position, 0, _tileset_positions._solid)
+	_tilemap.set_cell(0, _top_left_tile_position, 0, _tileset_positions._solid_horizontal)
+	_tilemap.set_cell(0, _bottom_right_tile_position, 0, _tileset_positions._solid_horizontal)
 	_tilemap.set_cell(0, Vector2i(
 		_top_left_tile_position.x, _bottom_right_tile_position.y
-		), 0, _tileset_positions._solid)
+		), 0, _tileset_positions._solid_horizontal)
 	_tilemap.set_cell(0, Vector2i(
 		_bottom_right_tile_position.x, _top_left_tile_position.y
-		), 0, _tileset_positions._solid)
+		), 0, _tileset_positions._solid_horizontal)
 	
 	## Generating doors
 	# NOTE: To find the position of each door use the following equation

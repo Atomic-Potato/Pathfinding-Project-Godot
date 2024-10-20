@@ -52,7 +52,9 @@ func _ready():
 				starting_positions.y + i,
 			)
 		_tilemap.set_cell(0, tile_position, 0,
-			_tileset_positions._door if _is_open else _tileset_positions._solid
+			_tileset_positions._door if _is_open else\
+			(_tileset_positions._solid_horizontal if _orientation == Horizontal else\
+			_tileset_positions._solid_vertical)
 		)
 
 # INFO: The default value of (-1,-1) indicates that you erase the tile 
@@ -83,7 +85,8 @@ func open() -> void:
 	_is_open = true
 
 func close() -> void:
-	_replace_tiles(_tileset_positions._solid)
+	_replace_tiles(_tileset_positions._solid_horizontal if _orientation == Horizontal else\
+		_tileset_positions._solid_vertical)
 	_is_open = false
 
 # INFO: Deletes the door node and its tiles

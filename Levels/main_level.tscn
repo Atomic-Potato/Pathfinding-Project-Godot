@@ -1,25 +1,16 @@
-[gd_scene load_steps=12 format=3 uid="uid://dncm3ofv1bmf3"]
+[gd_scene load_steps=10 format=3 uid="uid://dncm3ofv1bmf3"]
 
 [ext_resource type="Script" path="res://Scripts/Pathfinding/grid.gd" id="1_wp78r"]
 [ext_resource type="Script" path="res://Scripts/Pathfinding/grids_manager.gd" id="1_ylp0x"]
 [ext_resource type="Texture2D" uid="uid://cek0kteif2jjf" path="res://icon.svg" id="2_hs3ge"]
 [ext_resource type="Script" path="res://Scripts/Camera/CameraMovement.gd" id="3_6kidx"]
 [ext_resource type="PackedScene" uid="uid://bu7vfbh7sdu1h" path="res://Scenes/Objects/agent.tscn" id="4_d41mr"]
-[ext_resource type="Texture2D" uid="uid://d14c3v3lfdfp5" path="res://Art/TileMaps/Red Green Tilemap.png" id="5_2pcpw"]
 [ext_resource type="Script" path="res://Scripts/Dungeon/DunegonManager.gd" id="6_c6qvl"]
+[ext_resource type="TileSet" uid="uid://dyq0jrl5da200" path="res://Art/TileMaps/Flat Colors Tileset.tres" id="6_pu1ku"]
 [ext_resource type="Script" path="res://Scripts/Dungeon/DungeonTileSetPositions.gd" id="7_tb5qd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ys3cx"]
 size = Vector2(26, 26)
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oj685"]
-texture = ExtResource("5_2pcpw")
-0:0/0 = 0
-1:0/0 = 0
-2:0/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_pr0k2"]
-sources/0 = SubResource("TileSetAtlasSource_oj685")
 
 [node name="Main Level" type="Node2D"]
 y_sort_enabled = true
@@ -37,9 +28,13 @@ non_solid_cell_color = Color(0, 0.392157, 0, 0.498039)
 solid_cell_color = Color(0.545098, 0, 0, 0.498039)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
 script = ExtResource("3_6kidx")
+log_speed_barrier = 200.0
+log_speed_multiplier = 200.0
 zoom_speed = 10.0
 max_zoom_in = Vector2(6, 6)
+max_zoom_out = Vector2(0, 0)
 
 [node name="Agent" parent="." instance=ExtResource("4_d41mr")]
 
@@ -58,12 +53,12 @@ scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_hs3ge")
 
 [node name="TileMap" type="TileMap" parent="."]
-tile_set = SubResource("TileSet_pr0k2")
+tile_set = ExtResource("6_pu1ku")
 format = 2
 
 [node name="DungeonManager" type="Node2D" parent="." node_paths=PackedStringArray("tileset_positions", "tilemap")]
 script = ExtResource("6_c6qvl")
-rooms_count = 400
+rooms_count = 5000
 tileset_positions = NodePath("DungeonTileSetPositions")
 tilemap = NodePath("../TileMap")
 is_debug = true
@@ -72,4 +67,5 @@ is_draw_path_to_center = true
 
 [node name="DungeonTileSetPositions" type="Node" parent="DungeonManager"]
 script = ExtResource("7_tb5qd")
+_non_solid = Vector2i(1, 0)
 _door = Vector2i(1, 0)

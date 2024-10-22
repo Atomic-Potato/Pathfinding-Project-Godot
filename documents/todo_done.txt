@@ -1,0 +1,13 @@
+# TODO DONE
+x Check again how abstraction works
+----------------------------------------------------------------------------------------------------
+##### UNITS
+# GENERAL
+
+# FRIENDLY
+	x Selection
+	x movement
+----------------------------------------------------------------------------------------------------
+##### CAMERA
+# GENERAL
+	x basic movement controls

@@ -19,8 +19,6 @@ zoom_speed = 10.0
 max_zoom_in = Vector2(6, 6)
 max_zoom_out = Vector2(0, 0)
 
-[node name="DungeonManager" parent="." instance=ExtResource("2_2l4mf")]
-
 [node name="World" type="Node2D" parent="."]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World"]
@@ -34,3 +32,5 @@ shape = SubResource("RectangleShape2D_ys3cx")
 [node name="Sprite2D" type="Sprite2D" parent="World/StaticBody2D/CollisionShape2D"]
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_x4al1")
+
+[node name="DungeonManager" parent="." instance=ExtResource("2_2l4mf")]

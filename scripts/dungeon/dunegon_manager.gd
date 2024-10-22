@@ -1,11 +1,3 @@
-## TODO:
-## - Add a perecentage for if a room will be removed or not
-## - Redo the operation if the number of rooms is smaller than some threshhold
-## - Add horizontal and vertical variation
-## - Look into autotiling
-## - Create a class to hold a cluster of rooms
-##		(Rooms which are connected by fully open walls)
-
 class_name DungeonManager extends Node2D
 
 @export_range(0,1) var door_generation_bias = .3
@@ -109,7 +101,7 @@ func _ready():
 			#print("All explored, breaking...")
 			break
 		
-		_current_room = _unexplored_rooms.pop_front()
+		_current_room = _unexplored_rooms.pop_front() # NOTE: Remember that pop also removes the variant
 		_debug_circle_1_position = _current_room.get_world_position()
 		
 		# continue if no doors are open
@@ -287,3 +279,7 @@ func _ready():
 			
 	dungeon_generated_signal.emit()
 	
+func _input(event):
+	if event.is_action_pressed("ui_select"):
+		print("Scene reloaded")
+		get_tree().reload_current_scene()

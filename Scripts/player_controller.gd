@@ -46,7 +46,7 @@ func _enter_tree():
 	empty_selection()
 
 func _ready():
-	grid = GridsManager.get_closest_grid(global_position)
+	grid = PathfindingManager.grid
 	on_mouse_tap_params.connect(get_adjacent_cells)
 	
 func setup_selection_area_node() -> void:

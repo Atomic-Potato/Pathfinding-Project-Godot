@@ -53,7 +53,8 @@ func draw_straight_path() -> void:
 
 
 func _ready():
-	grid = GridsManager.get_closest_grid(global_position)
+	grid = PathfindingManager.grid
+	PathfindingManager.agents.append(self)
 
 func _process(delta):
 	follow_path(delta)
@@ -111,16 +112,3 @@ func create_smooth_path(points: PackedVector2Array, bezier_intensitiy: float = 0
 			control_point_out_direction * distance_out * bezier_intensitiy)
 	
 	return curve.tessellate_even_length(5,5)
-	
-	
-	
-	
-	
-	
-	
-
-
-
-
-
-	

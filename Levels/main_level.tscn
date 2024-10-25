@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dncm3ofv1bmf3"]
+[gd_scene load_steps=7 format=3 uid="uid://dncm3ofv1bmf3"]
 
+[ext_resource type="Script" path="res://scripts/managers/scene_manager/scenes/main_level_scene.gd" id="1_1une6"]
 [ext_resource type="Script" path="res://scripts/camera/camera_movement.gd" id="1_6j345"]
 [ext_resource type="PackedScene" uid="uid://cbgmfpiufluea" path="res://scenes/managers/dungeon_manager.tscn" id="2_2l4mf"]
+[ext_resource type="PackedScene" uid="uid://cy27sea6lgwn1" path="res://scenes/objects/pathfinding/grid.tscn" id="3_1rfil"]
 [ext_resource type="Texture2D" uid="uid://cek0kteif2jjf" path="res://icon.svg" id="3_x4al1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ys3cx"]
@@ -9,6 +11,9 @@ size = Vector2(26, 26)
 
 [node name="Main Level" type="Node2D"]
 y_sort_enabled = true
+script = ExtResource("1_1une6")
+_dungeon_manager_resource = ExtResource("2_2l4mf")
+_pathfinding_grid_resource = ExtResource("3_1rfil")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.25, 0.25)
@@ -32,5 +37,3 @@ shape = SubResource("RectangleShape2D_ys3cx")
 [node name="Sprite2D" type="Sprite2D" parent="World/StaticBody2D/CollisionShape2D"]
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_x4al1")
-
-[node name="DungeonManager" parent="." instance=ExtResource("2_2l4mf")]

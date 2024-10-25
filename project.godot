@@ -18,10 +18,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GridsManager="*res://scripts/pathfinding/grids_manager.gd"
 PlayerController="*res://scripts/player_controller.gd"
 GameManager="*res://scenes/managers/game_manager.tscn"
-SceneManager="*res://scenes/managers/scene_manager.tscn"
+PathfindingManager="*res://scripts/pathfinding/pathfinding_manager.gd"
+SceneManager="*res://Scripts/managers/scene_manager/scene_manager.gd"
 
 [display]
 

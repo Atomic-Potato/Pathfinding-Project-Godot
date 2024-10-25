@@ -9,13 +9,24 @@ class_name Grid extends Node2D
 var grid : AStarGrid2D = AStarGrid2D.new()
 var grid_size_in_pixels : Vector2
 
+@export_category("Automatic Setup")
+@export var is_use_tilemap: bool
+@export var the_tilemap_in_question: TileMap
+
+@export_category("Manual Setup")
 @export var grid_center_position : Node2D
 @onready var grid_start_position : Vector2i  :
 	get :
-		return grid_center_position.global_position - Vector2(cell_count * cell_size_in_pixels) / 2
-
+		if is_use_tilemap:
+			return the_tilemap_in_question.global_position + Vector2(GameManager.general_tilemap_cell_pixel_size)\
+				- (the_tilemap_in_question.get_used_rect().size - GameManager.general_tilemap_cell_pixel_size)\
+				* .5 
+		else:
+			return grid_center_position.global_position - Vector2(cell_count * cell_size_in_pixels) * .5
 @export var cell_count : Vector2i = Vector2i(16, 16)
 @export var cell_size_in_pixels : Vector2i = Vector2i(8, 8)
+
+@export_category("Navigation")
 @export var navigation_method : AStarGrid2D.Heuristic = AStarGrid2D.HEURISTIC_OCTILE
 @export var diagonal_mode : AStarGrid2D.DiagonalMode = AStarGrid2D.DIAGONAL_MODE_ONLY_IF_NO_OBSTACLES
 @export var is_jumping : bool = true
@@ -27,6 +38,7 @@ var grid_size_in_pixels : Vector2
 @export var non_solid_cell_color : Color = Color.DARK_GREEN
 @export var solid_cell_color : Color = Color.DARK_RED
 
+var grid_generated_signal: Signal
 
 func _draw():
 	if not draw_debugging : return
@@ -41,17 +53,16 @@ func draw_grid() -> void :
 			var cell_color : Color = solid_cell_color if grid.is_point_solid(id) else non_solid_cell_color
 			draw_rect(Rect2(cell_position + cell_size_in_pixels * 0.1,  cell_size_in_pixels * 0.8), cell_color)
 
-func _enter_tree():
-	GridsManager.grids.append(self)
-	
 func _ready():
 	create_grid()
 	update_solid_status()
 	grid_size_in_pixels = cell_count * cell_size_in_pixels
+	grid_generated_signal.emit()
 
 func create_grid() -> void:
-	grid.region = Rect2i(0,0, cell_count.x, cell_count.y)
-	grid.offset = grid_start_position
+	grid.region = the_tilemap_in_question.get_used_rect() if is_use_tilemap else\
+		Rect2i(0,0, cell_count.x, cell_count.y)
+	grid.offset = grid_start_position # TODO: UPDATE TO USE TILEMAP IN THAT CASE
 	grid.cell_size = cell_size_in_pixels
 	grid.default_compute_heuristic = navigation_method
 	grid.diagonal_mode = diagonal_mode

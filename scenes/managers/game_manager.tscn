@@ -1,10 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://qws54p3bf47f"]
+[gd_scene load_steps=2 format=3 uid="uid://qws54p3bf47f"]
 
 [ext_resource type="Script" path="res://scripts/managers/game_manager.gd" id="1_mefal"]
-[ext_resource type="PackedScene" uid="uid://cbgmfpiufluea" path="res://scenes/managers/dungeon_manager.tscn" id="2_0hmki"]
-[ext_resource type="PackedScene" uid="uid://cy27sea6lgwn1" path="res://scenes/managers/grid_manager.tscn" id="3_65v3w"]
 
 [node name="GameManager" type="Node2D"]
 script = ExtResource("1_mefal")
-_dungeon_manager_resource = ExtResource("2_0hmki")
-_pathfinding_grid_manager_resource = ExtResource("3_65v3w")

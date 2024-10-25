@@ -1,11 +1,13 @@
 # TODO
-
+continue on adapting the grid to use a tilemap
 ----------------------------------------------------------------------------------------------------
 #### CODE
 # game_manager.gd
 	- /TEMP/ ask scene manager to load into level 1 immidiately
 
 # scene_manager.gd
+	- Check this plugin out so you wont have to do scene loading:
+		https://github.com/Maaack/Godot-Scene-Loader
 	x Start the game with the "start screen" scene
 	x autoload scene manager
 	Loading a level:

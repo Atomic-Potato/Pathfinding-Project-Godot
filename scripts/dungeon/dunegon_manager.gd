@@ -278,8 +278,3 @@ func _ready():
 			#await get_tree().create_timer(.01).timeout
 			
 	dungeon_generated_signal.emit()
-	
-func _input(event):
-	if event.is_action_pressed("ui_select"):
-		print("Scene reloaded")
-		get_tree().reload_current_scene()
